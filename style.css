@@ -651,7 +651,8 @@ button.bg-red:hover{
     }
 
     .total-disponible {
-        order: 6;
+        position: static;
+        order: 0;
     }
 
     #gasto-monto {
