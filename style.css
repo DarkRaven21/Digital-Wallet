@@ -311,6 +311,7 @@ button {
 #pop-up,
 #pop-up-ingreso, 
 #pop-up-presupuesto,
+#pop-up-ahorro,
 #pop-up-cambiarPsw {
     position: fixed;
     top: 0;
@@ -422,7 +423,8 @@ button {
     text-align: center;
 }
 
-/* PopUp Ingreso */
+/* PopUp Presupuesto */
+
 #pop-up-presupuesto .inside-pop-up {
     background-color: #5a7799;
     gap: 0.8em;
@@ -471,6 +473,56 @@ button {
     text-align: center;
 }
 
+/* PopUp Ahorro */
+
+#pop-up-ahorro .inside-pop-up {
+    background-color: #6a994e;
+    gap: 0.8em;
+    padding: 1em 2em;
+}
+
+#pop-up-ahorro p,
+#pop-up-ahorro #nuevoAhorro{
+    margin-block: 1em;
+}
+
+#pop-up-ahorro #nuevoAhorro {
+    --parentColor: #a7c957;
+    --parentHover: #beff28;
+}
+
+#pop-up-ahorro .inside-pop-up button:not(.walletBtn){
+    border-radius: 0;
+    border: initial;
+    padding: 0.2em 0.5em;
+    width: 100%;
+    font-size: 0.8em;
+}
+
+#pop-up-ahorro .inside-pop-up .div-line{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    gap: 0.5em;
+    color: black;
+    text-transform: capitalize;
+    background: #a7c957;
+    border-radius: 8px;
+    padding: 0.5em;
+    width: 100%;
+}
+
+#pop-up-ahorro .inside-pop-up input{
+    width: 60px;
+    text-align: center;
+}
+
+#pop-up-ahorro .inside-pop-up input[type=text]{
+    width: 90px;
+    text-align: center;
+}
+
 /* ######################## */
 
 #walletOwner{
@@ -478,11 +530,13 @@ button {
 }
 
 .resumen-ingreso .sub-title, 
-.resumen-presupuesto .sub-title {
+.resumen-presupuesto .sub-title,
+.resumen-ahorro .sub-title {
     cursor: pointer;
 }
 
-.resumen-ingreso .sub-title:hover {
+.resumen-ingreso .sub-title:hover,
+.resumen-ahorro .sub-title:hover {
     background-color: #72f02a!important;
 }
 

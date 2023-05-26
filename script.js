@@ -37,6 +37,9 @@ const popUpIngresoInside = document.querySelector("#pop-up-ingreso").querySelect
 const abrirPresupuestos = document.querySelector(".resumen-presupuesto").querySelector(".sub-title");
 const agregarPresupuesto = document.querySelector("#newPresupuesto");
 const popUpPresupuestoInside = document.querySelector("#pop-up-presupuesto").querySelector(".inside-pop-up");
+const abrirAhorros = document.querySelector(".resumen-ahorro").querySelector(".sub-title");
+const agregarAhorro = document.querySelector("#newAhorro");
+const popUpAhorroInside = document.querySelector("#pop-up-ahorro").querySelector(".inside-pop-up");
 const passwordInput = document.getElementById("password");
 const cambiarPsw = document.getElementById("cambiarPsw");
 const passwordIcon = document.querySelector(".changePsw");
@@ -76,6 +79,11 @@ abrirPresupuestos.addEventListener("click", openPopUp);
 abrirPresupuestos.popUpId = '#pop-up-presupuesto';
 agregarPresupuesto.addEventListener("click", insertPresupuestoIntoTable);
 popUpPresupuestoInside.addEventListener('click', getEditPresupuesto);
+
+abrirAhorros.addEventListener("click", openPopUp);
+abrirAhorros.popUpId = '#pop-up-ahorro';
+agregarAhorro.addEventListener("click", insertAhorroIntoTable);
+popUpAhorroInside.addEventListener('click', getEditAhorro);
 
 passwordIcon.addEventListener("click", openPopUp);
 passwordIcon.popUpId = '#pop-up-cambiarPsw';
@@ -483,8 +491,12 @@ function getTotal(){
   var gastosTotal = 0;
   //Ahorro
   const ahorros = document.querySelector(".resumen-ahorro");
-  const ahorroMonto = ahorros.querySelector(".monto");
-  var ahorroTotal = parseInt(ahorroMonto.textContent);
+  const ahorroMonto = ahorros.querySelectorAll(".monto");
+  var ahorroTotal = 0;
+
+  for (let i=0; i<ahorroMonto.length; i++){
+    ahorroTotal += parseInt(ahorroMonto[i].textContent);
+  }
   
   for (let i=0; i<gastosMonto.length; i++){
     gastosTotal += parseInt(gastosMonto[i].textContent);
@@ -504,6 +516,161 @@ function getLastId(){
       lastID = parseInt(id);
     }
   }
+}
+
+// Ahorros
+
+function getEditAhorro(e){
+  if (!e.target.matches('button')){return};
+  if (e.target.textContent=='Editar'){
+    let rowToEdit = e.target.parentNode;
+    updateAhorrosFromTable(rowToEdit);
+  } else if (e.target.textContent=='Eliminar'){
+    let rowToEdit = e.target.parentNode;
+    deleteAhorrosFromTable(rowToEdit);
+  }
+}
+
+function getAhorrosFromTable(isPopUp) {
+  const dbref = ref(db);
+
+  if (isPopUp == "true"){
+    clearGrid('#pop-up-ahorro', ".addToTable")
+
+    get(child(dbref, walletOwner+"Ahorros/"+dateDirectory))
+      .then((snapshot) => {
+        snapshot.forEach(childSnapshot => {
+  
+          let gridLine = document.createElement('div');
+          let divName = childSnapshot.val().Nombre;
+          let divMonto = childSnapshot.val().Monto;
+    
+          gridLine.setAttribute("title", childSnapshot.val().Fecha);
+          gridLine.classList.add("div-line");
+          gridLine.dataset.key = childSnapshot.val().Id;
+          if(divMonto == 0){
+            gridLine.innerHTML = '<span>'+divName+'</span><input placeholder="'+divMonto+'"><button class="bg-red">Eliminar</button>';
+          } else {
+            gridLine.innerHTML = '<span>'+divName+'</span><input placeholder="'+divMonto+'"><button>Editar</button>';
+          }
+  
+          appendToPopUp(gridLine, "#pop-up-ahorro");
+        });
+      })
+      .catch((error) => {
+        alert(error)
+      }
+    )
+  } else {
+    clearGrid('.resumen-ahorro', ".sub-title");
+
+    get(child(dbref, walletOwner+"Ahorros/"+dateDirectory))
+      .then((snapshot) => {
+        snapshot.forEach(childSnapshot => {
+  
+          let gridLine = document.createElement('div');
+          let divName = childSnapshot.val().Nombre;
+          let divMonto = childSnapshot.val().Monto;
+
+          if (divMonto != 0){
+            gridLine.setAttribute("title", childSnapshot.val().Fecha);
+            gridLine.classList.add("grid-line");
+            gridLine.dataset.key = childSnapshot.val().Id;
+            gridLine.innerHTML = '<div class="rubro">'+divName+'</div><div class="monto">'+divMonto+'</div>';
+    
+            appendToAhorros(gridLine);
+          }
+        });
+      })
+      .catch((error) => {
+        alert(error)
+      }
+    )
+  }
+}
+
+function updateAhorrosFromTable(row){
+  let key = row.dataset.key;
+  console.log(key);
+  let divMonto = row.querySelector("input").value;
+  if (divMonto == ""){
+    alert("Debes ingresar un monto o ingresar 0");
+    return;
+  }
+
+  update(ref(db, walletOwner+"Ahorros/"+dateDirectory+key), {
+    Monto: divMonto,
+    Fecha: sFecha,
+  })
+    .then(() => {
+      alert("Data updated succesfully");
+      getAhorrosFromTable("true");
+      getAhorrosFromTable();
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
+function deleteAhorrosFromTable(row){
+  let key = row.dataset.key;
+
+  remove(ref(db, walletOwner+"Ahorros/"+dateDirectory+key), {
+  })
+    .then(() => {
+      alert("Data updated succesfully");
+      getAhorrosFromTable("true");
+      getAhorrosFromTable();
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
+function appendToAhorros(line){
+  let ahorro = document.querySelector(".resumen-ahorro");
+  ahorro.appendChild(line);
+  getTotal();
+}
+
+function insertAhorroIntoTable() {
+  const resumenAhorro = document.querySelector("#pop-up-ahorro");
+  const divLines = resumenAhorro.querySelectorAll(".div-line");
+  var maxKey = 0;
+
+  for (let i=0; i<divLines.length; i++){
+      let key = divLines[i].dataset.key;
+      if (parseInt(key) > maxKey){
+        maxKey = parseInt(key);
+      }
+  }
+
+  maxKey++;
+  let elementName = this.parentElement.querySelector(".inputName").value;
+  let elementMonto = this.parentElement.querySelector(".inputMonto").value;
+
+  if (elementName == "" || elementMonto == ""){
+    alert("Debes completar Nombre y Monto")
+    return;
+  }
+
+  set(ref(db, walletOwner +"Ahorros/"+ dateDirectory + maxKey), {
+    Nombre: elementName,
+    Monto: elementMonto,
+    Fecha: sFecha,
+    Id: maxKey
+  })
+    .then(() => {
+      alert("Succes!");
+      this.parentElement.querySelector(".inputName").value = "";
+      this.parentElement.querySelector(".inputMonto").value = "";
+      getAhorrosFromTable("true");
+      getAhorrosFromTable();
+    })
+    .catch((error) => {
+      alert(error);
+      maxKey--;
+    })
 }
 
 // 19/05/2023
@@ -532,6 +699,7 @@ function openPopUp(event){
   clearGrid(popUpId, ".addToTable");
   getIngresosFromTable("true");
   getPresupuestoFromTable("true");
+  getAhorrosFromTable("true");
 }
 
 function getPresupuesto(){
@@ -570,6 +738,7 @@ function getNewDb(){
     getGastosFromTable();
     getIngresosFromTable();
     getPresupuestoFromTable();
+    getAhorrosFromTable();
     password.value = "";
 }
 
