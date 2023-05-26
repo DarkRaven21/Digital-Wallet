@@ -1,0 +1,589 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*Added*/
+input,
+textarea,
+select,
+button {
+  width: 150px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* ###### End Reset ###### */
+@font-face {
+    font-family: OpenSans;
+    src: url("fonts/OpenSans-VariableFont_wdth\,wght.ttf");
+}
+
+:root {
+    --img-width: 250px;
+    --grid-width: 250px;
+    font-family: OpenSans;
+    font-size: 14px;
+}
+
+.home-page {
+    display: flex;
+}
+
+.card {
+    border-radius: 8px;
+    padding: 1em;
+    background-color: #f2f4f4;
+}
+
+#right-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#title-container {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    border: solid 1px;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f2f4f4;
+    border-color: #f2f4f4;
+    text-align: center;
+}
+
+
+/* Billetera Electrónica */
+#container {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 15px;
+}
+
+#title-container {
+    justify-content: center;
+    padding: 15px;
+    grid-column: span 2;
+    display: grid;
+    gap: 0.5em;
+}
+
+#title-container.fecha-resumen {
+    font-size: 14px;
+}
+
+#title-container .changePsw {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #c2bfdb;
+    border: black 2px solid;
+    padding: 5px;
+    border-radius: 100vh;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+#title-container .changePsw:hover {
+    background: #d7d6e1;
+}
+
+#resumen-cliente {
+    display: grid;
+    align-items: center;
+    gap: 0.5em;
+}
+
+#resumen-cliente>* {
+    padding: 0.5em;
+    border-radius: 8px;
+    background-color: lightcoral;
+}
+
+.resumen-ingreso,
+.resumen-ahorro,
+.resumen-gasto {
+    grid-column: 1;
+}
+
+.resumen-gasto,
+.total-disponible {
+    grid-column: span 2;
+    justify-self: center;
+    width: auto;
+}
+
+.resumen-gasto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em!important;
+    width: auto;
+    justify-self: stretch;
+}
+
+.resumen-gasto .sub-title,
+.total-disponible .sub-title {
+    grid-column: span 2;
+    text-align: center;
+}
+
+.resumen-gasto .grid-line {
+    max-width: none;
+}
+
+.total-disponible .grid-line {
+    grid-column: span 2;
+}
+
+.total-disponible {
+    position: sticky;
+    bottom: 0;
+    justify-self: end;
+}
+
+
+.sub-title {
+    background-color: lightseagreen !important;
+}
+
+.grid-line {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    max-width: 220px;
+}
+
+.monto {
+    text-align: right;
+}
+
+.resumen-presupuesto {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.ingreso-gastos {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+#gasto-ingresar {
+    max-width: fit-content;
+}
+
+#gasto-monto {
+    max-width: 65px;
+}
+
+/* NUEVO */
+
+/* NUEVO */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+:root {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+}
+
+#container {
+    align-items: center;
+}
+
+#resumen-cliente,
+#title-container {
+    border-radius: 8px;
+}
+
+.grid-line {
+    position: relative;
+}
+
+#addButton {
+    position: absolute;
+    left: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 19/05/2023 */
+
+.resumen-ingreso .sub-title,
+.resumen-ahorro .sub-title {
+  background-color: #6a994e!important;
+}
+
+.resumen-ingreso .grid-line,
+.resumen-ahorro .grid-line {
+  background-color: #a7c957!important;
+}
+
+.resumen-presupuesto .sub-title{
+  background-color: #5a7799!important;
+}
+
+.resumen-presupuesto .grid-line{
+  background-color: #88a7d0!important;
+}
+
+#resumen-cliente > * {
+  background-color: #ffae6a;
+}
+
+.resumen-gasto .sub-title,
+.ingreso-gastos .sub-title {
+  background-color: #e26a2c!important;
+}
+
+.resumen-gasto .grid-line,
+.ingreso-gastos .grid-line {
+  background-color: #ffae6a!important;
+}
+
+.total-disponible .sub-title {
+  background-color: #624c64!important;
+}
+
+.total-disponible .grid-line {
+  background-color: #a788ab!important;
+}
+
+.sub-title {
+  text-align: center;
+  color: #ffffff;
+}
+
+#pop-up,
+#pop-up-ingreso, 
+#pop-up-presupuesto,
+#pop-up-cambiarPsw {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000000b9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* PopUp Entrar */
+.inside-pop-up {
+    position: absolute;
+    padding: 1.5em 5em;
+    background-color: slateblue;
+    color: #ffffff;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    font-size: 1em;
+}  
+
+.inside-pop-up select {
+    width: fit-content;
+    text-transform: uppercase;
+    background-color: slateblue;
+    color: #ffffff;
+    border: solid 1px;
+    border-radius: 4px;
+}
+
+#pop-up label,
+#pop-up-cambiarPsw label {
+    display: grid;
+    gap: 0.5em;
+    justify-items: center;
+}
+
+#pop-up input[type=password],
+#pop-up-cambiarPsw input[type=password] {
+    width: 122px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.inside-pop-up .button {
+    border-radius: 4px;
+    border: solid 1px white;
+    padding: 0.5em 2em;
+    width: fit-content;
+}
+
+.inside-pop-up button:hover:not(.walletBtn) {
+    background: #b3acac;
+    border: solid 1px #b3acac;
+}
+
+/* PopUp Ingreso */
+#pop-up-ingreso .inside-pop-up {
+    background-color: #6a994e;
+    gap: 0.8em;
+    padding: 1em 2em;
+}
+
+#pop-up-ingreso p,
+#pop-up-ingreso #nuevoIngreso{
+    margin-block: 1em;
+}
+
+#pop-up-ingreso #nuevoIngreso {
+    --parentColor: #a7c957;
+    --parentHover: #beff28;
+}
+
+#pop-up-ingreso .inside-pop-up button:not(.walletBtn){
+    border-radius: 0;
+    border: initial;
+    padding: 0.2em 0.5em;
+    width: 100%;
+    font-size: 0.8em;
+}
+
+#pop-up-ingreso .inside-pop-up .div-line{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    gap: 0.5em;
+    color: black;
+    text-transform: capitalize;
+    background: #a7c957;
+    border-radius: 8px;
+    padding: 0.5em;
+    width: 100%;
+}
+
+#pop-up-ingreso .inside-pop-up input{
+    width: 60px;
+    text-align: center;
+}
+
+#pop-up-ingreso .inside-pop-up input[type=text]{
+    width: 90px;
+    text-align: center;
+}
+
+/* PopUp Ingreso */
+#pop-up-presupuesto .inside-pop-up {
+    background-color: #5a7799;
+    gap: 0.8em;
+    padding: 1em 2em;
+}
+
+#pop-up-presupuesto p,
+#pop-up-presupuesto #nuevoPresupuesto{
+    margin-block: 1em;
+}
+
+#pop-up-presupuesto #nuevoPresupuesto {
+    --parentColor: #88a7d0;
+    --parentHover: #67a6f8;
+}
+
+#pop-up-presupuesto .inside-pop-up button:not(.walletBtn){
+    border-radius: 0;
+    border: initial;
+    padding: 0.2em 0.5em;
+    width: 100%;
+    font-size: 0.8em;
+}
+
+#pop-up-presupuesto .inside-pop-up .div-line{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    gap: 0.5em;
+    color: black;
+    text-transform: capitalize;
+    background: #88a7d0;
+    border-radius: 8px;
+    padding: 0.5em;
+    width: 100%;
+}
+
+#pop-up-presupuesto .inside-pop-up input{
+    width: 60px;
+    text-align: center;
+}
+
+#pop-up-presupuesto .inside-pop-up input[type=text]{
+    width: 90px;
+    text-align: center;
+}
+
+/* ######################## */
+
+#walletOwner{
+    text-align: center;
+}
+
+.resumen-ingreso .sub-title, 
+.resumen-presupuesto .sub-title {
+    cursor: pointer;
+}
+
+.resumen-ingreso .sub-title:hover {
+    background-color: #72f02a!important;
+}
+
+.resumen-presupuesto .sub-title:hover {
+    background-color: #4d9efc!important;
+}
+
+
+
+
+/* ######COLORS######## */
+.bg-red{
+    background-color: rgba(255, 50, 50, 0.836);
+}
+
+input.bg-red:hover,
+button.bg-red:hover{
+    background-color: rgba(255, 0, 0, 0.836)!important;
+    color: white;
+}
+
+
+
+
+
+
+.closeBtn {
+    position: absolute;
+    right: 1em;
+    top: 1em; 
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border: none!important;
+    border-top-right-radius: 8px!important;
+    height: 20px!important;
+    width: 20px!important;
+    font-size: 11.2px;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    background-color: rgb(253, 57, 57)!important;
+}
+
+.walletBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    border-color: var(--parentColor)!important;
+    background-color: var(--parentColor)!important;
+    padding: 0.5em 0.5em 0.4em!important;
+    text-align: center;
+    cursor: pointer;
+}
+
+.walletBtn:hover {
+    color: white;
+    border-color: var(--parentHover)!important;
+    background-color: var(--parentHover)!important;
+}
+
+@media(max-width: 500px) {
+    :root {
+        font-size: 12px;
+    }
+
+    #container {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-line,
+    .sub-title {
+        font-size: 12px;
+    }
+
+    .resumen-presupuesto {
+        grid-column: 1;
+        grid-row: 5;
+    }
+
+    .ingreso-gastos {
+        grid-column: 1;
+        grid-row: 6;
+    }
+
+    #gasto-monto {
+        max-width: 45px;
+    }
+
+    #addButton {
+        position: relative;
+        transform: translateY(0);
+        left: 50%;
+        top: 0;
+        width: fit-content;
+        margin-top: 0.4em;
+    }
+}

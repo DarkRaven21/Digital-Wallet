@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script type="module" src="script.js"></script>
+    <script src="https://kit.fontawesome.com/5bca3361cd.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <main id="main" class="home-page">
+    
+        <div id="right-body" data-aos="fade-down">
+            <div id="container">
+                <div id="title-container" class="rounded-2">
+                    <div id="dbName"></div>
+                    <i class="fa-solid fa-key changePsw"></i>
+                </div>
+                <div id="title-container" class="rounded-2 fecha-resumen">
+                    <div>Resumen al <span id="fechaHoy"></span></div>
+                </div>
+                <div id="resumen-cliente" class="card resumen-ingreso">
+                    <div class="sub-title">Ingresos</div>
+                    <div class="grid-line">
+                        <div id="ing-01" class="rubro">Credisur</div>
+                        <div class="monto">39000</div>
+                    </div>
+                    <div class="grid-line">
+                        <div id="ing-02" class="rubro">Docencia</div>
+                        <div class="monto">44000</div>
+                    </div>
+                </div>
+                <div id="resumen-cliente" class="card resumen-ahorro">
+                    <div class="sub-title">Ahorros</div>
+                    <div class="grid-line">
+                        <div id="aho-01" class="rubro">Ahorro</div>
+                        <div class="monto">500</div>
+                    </div>
+                </div>
+                <div id="resumen-cliente" class="card resumen-gasto">
+                    <div class="sub-title">Gastos</div>
+                </div>
+                <div id="resumen-cliente" class="card resumen-presupuesto">
+                    <div class="sub-title">Presupuesto Semanal</div>
+                    <div class="grid-line">
+                        <div id="pres-01" class="rubro">Delivery</div>
+                        <div class="monto">1500</div>
+                    </div>
+                    <div class="grid-line">
+                        <div id="pres-02" class="rubro">Salidas</div>
+                        <div class="monto">2000</div>
+                    </div>
+                </div>
+                <div id="resumen-cliente" class="card ingreso-gastos">
+                    <div class="sub-title">Ingreso de Gastos</div>
+                    <div class="grid-line">
+                        <select name="gasto-ingresar" id="gasto-ingresar">
+                            <option value="0">Elegir</option>
+                            <!-- <option value="Delivery">Delivery</option>
+                            <option value="Salidas">Salidas</option> -->
+                        </select>
+                        <input type="tel" name="gasto-monto" id="gasto-monto">
+                        <button id="addButton" class="hidden">Agregar</button>
+                    </div>
+                </div>
+                <div id="resumen-cliente" class="card total-disponible">
+                    <div class="sub-title">Total Disponible</div>
+                    <div class="grid-line">
+                        <div id="pres-01" class="rubro">Total</div>
+                        <div class="monto">25000</div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </main><!-- End #main -->
+    <!-- <button id="insertButton">Enviar</button> -->
+    <div id="pop-up">
+        <div class="inside-pop-up">
+            <label for="walletOwner">
+                Ingresar como:
+                <select name="walletOwner" id="walletOwner">
+                    <option value="BrunoYRomi/">Bruno y Romi</option>
+                    <option value="Yesi/">Yesi</option>
+                </select>
+            </label>
+            <label for="password">Contraseña
+                <input type="password" name="password" id="password" maxlength="4">
+            </label>
+            <button id="enterBtn" class="button">Entrar</button>
+        </div>
+    </div>
+
+    <div id="pop-up-cambiarPsw" class="hidden">
+        <div class="inside-pop-up">
+            <button class="closeBtn">X</button>
+            <label for="password-vieja">Contraseña actual
+                <input type="password" name="password-vieja" id="password-vieja" maxlength="4">
+            </label>
+            <label for="password-nueva">Contraseña nueva
+                <input type="password" name="password-nueva" id="password-nueva" maxlength="4">
+            </label>
+            <label for="password-repetida">Repita contraseña
+                <input type="password" name="password-repetida" id="password-repetida" maxlength="4">
+            </label>
+            <button id="cambiarPsw" class="button">Entrar</button>
+        </div>
+    </div>
+
+    <div id="pop-up-ingreso" class="hidden">
+        <div class="inside-pop-up">
+            <button class="closeBtn">X</button>
+            <p class="pop-up-title">INGRESOS</p>
+            <div data-key="" class="div-line addToTable">
+                <input class="inputName" type="text" placeholder="Nombre"><input class="inputMonto" placeholder="Monto"><button id="newIngreso" >Agregar</button>
+            </div>
+            <!-- <button class="walletBtn">Agregar</button> -->
+        </div>
+    </div>
+
+    <div id="pop-up-presupuesto" class="hidden">
+        <div class="inside-pop-up">
+            <button class="closeBtn">X</button>
+            <p class="pop-up-title">Presupuestos</p>
+            <div data-key="" class="div-line addToTable">
+                <input class="inputName" type="text" placeholder="Nombre"><input class="inputMonto" placeholder="Monto"><button id="newPresupuesto">Agregar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TENGO QUE HACER QUE EL INPUT DE LA CONTRASENIA SE REINICIE AL CAMBIAR EL SELECT. TENGO QUE PONER LA LOGICA -->
+    <!-- TENGO QUE HACER LA PARTE DE AHORRO AHORA Y RESOLVER COMO HACER LO DEL PRESUPUESTO SEMANAL EN GETTOTAL -->
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
+
+
+
+
