@@ -54,7 +54,6 @@ getTotal();
 assignEnterBtn();
 assignCloseBtn();
 
-console.log(lastID);
 
 var sFecha = new Date().toLocaleString().split(",")[0];
 
@@ -167,7 +166,7 @@ function getIngresosFromTable(isPopUp) {
 
 function updateIngresosFromTable(row){
   let key = row.dataset.key;
-  console.log(key);
+
   let divMonto = row.querySelector("input").value;
   if (divMonto == ""){
     alert("Debes ingresar un monto o ingresar 0");
@@ -591,7 +590,7 @@ function getAhorrosFromTable(isPopUp) {
 
 function updateAhorrosFromTable(row){
   let key = row.dataset.key;
-  console.log(key);
+
   let divMonto = row.querySelector("input").value;
   if (divMonto == ""){
     alert("Debes ingresar un monto o ingresar 0");
@@ -872,63 +871,5 @@ function insertPswIntoDB(password){
     })
     .catch((error) => {
       alert(error);
-    })
-}
-
-
-
-function InsertData(){
-    set(ref(db, walletOwner + id), {
-        Name: 'Bruno',
-        Lastname: 'Jannet',
-        Age: 31
-    })
-    .then(()=>{
-        alert("Succes!");
-        id++;
-    })
-    .catch((error)=>{
-        alert(error);
-    })
-}
-
-function UpdateData(){
-    update(ref(db, walletOwner + findID), {
-        //Name: enterName.value,
-        //Lastname: enterLastname.value,
-        //Age: enterAge.value
-    })
-    .then(()=>{
-        alert("Data updated succesfully");
-    })
-    .catch((error)=>{
-        alert(error);
-    })
-}
-
-function FindData(){
-    const dbref = ref(db);
-
-    get(child(dbref, walletOwner + findID))
-    .then((snapshot)=>{
-        if (snapshot.exists()){
-            console.log(snapshot.val().Name);
-            console.log(snapshot.val().Lastname);
-        } else {
-            alert("Not data found");
-        }
-    })
-    .catch((error)=>{
-        alert(error);
-    })
-}
-
-function RemoveData(){
-    remove(ref(db, walletOwner + findID))
-    .then(()=>{
-        alert("Data removed succesfully");
-    })
-    .catch((error)=>{
-        alert(error);
     })
 }
