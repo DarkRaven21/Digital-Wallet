@@ -191,7 +191,13 @@ button {
 .total-disponible {
     position: sticky;
     bottom: 0;
-    justify-self: end;
+    padding-inline: 145px;
+    padding-top: 0.5em;
+    width: 249px;
+}
+
+.total-disponible .grid-line {
+    max-width: none;
 }
 
 
@@ -653,6 +659,8 @@ button.bg-red:hover{
     .total-disponible {
         position: static;
         order: 0;
+        width: auto;
+        padding: 1em;
     }
 
     #gasto-monto {
