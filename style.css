@@ -610,26 +610,52 @@ button.bg-red:hover{
     }
 
     #container {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 2em;
     }
 
     .grid-line,
     .sub-title {
         font-size: 12px;
+        max-width: none;
+    }
+
+    .resumen-ingreso {
+        order: 1;
+    }
+
+    .resumen-ahorro {
+        order: 2;
     }
 
     .resumen-presupuesto {
         grid-column: 1;
         grid-row: 5;
+        order: 3;
     }
 
     .ingreso-gastos {
-        grid-column: 1;
-        grid-row: 6;
+        order: 4;
+        display: flex;
+        justify-content: space-around;
+        gap: 1em;
+    }
+
+    .resumen-gasto {
+        order: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .total-disponible {
+        order: 6;
     }
 
     #gasto-monto {
-        max-width: 45px;
+        max-width: 90px;
     }
 
     #addButton {
