@@ -178,7 +178,7 @@ function updateIngresosFromTable(row){
     Fecha: sFecha,
   })
     .then(() => {
-      alert("Data updated succesfully");
+      //alert("Ingreso agregado correctamente");
       getIngresosFromTable("true");
       getIngresosFromTable();
     })
@@ -193,7 +193,7 @@ function deleteIngresosFromTable(row){
   remove(ref(db, walletOwner+"Ingresos/"+dateDirectory+key), {
   })
     .then(() => {
-      alert("Data updated succesfully");
+      //alert("Ingreso agregado correctamente");
       getIngresosFromTable("true");
       getIngresosFromTable();
     })
@@ -236,7 +236,7 @@ function insertIngresoIntoTable() {
     Id: maxKey
   })
     .then(() => {
-      alert("Succes!");
+      //alert("Gasto agregado correctamente");
       this.parentElement.querySelector(".inputName").value = "";
       this.parentElement.querySelector(".inputMonto").value = "";
       getIngresosFromTable("true");
@@ -333,7 +333,7 @@ function updatePresupuestoFromTable(row){
     Fecha: sFecha,
   })
     .then(() => {
-      alert("Data updated succesfully");
+      //alert("Presupuesto agregado correctamente");
       getPresupuestoFromTable("true");
       getPresupuestoFromTable();
     })
@@ -348,7 +348,7 @@ function deletePresupuestoFromTable(row){
   remove(ref(db, walletOwner+"Presupuesto/"+dateDirectory+key), {
   })
     .then(() => {
-      alert("Data updated succesfully");
+      //alert("Data updated succesfully");
       getPresupuestoFromTable("true");
       getPresupuestoFromTable();
     })
@@ -391,7 +391,7 @@ function insertPresupuestoIntoTable() {
     Id: maxKey
   })
     .then(() => {
-      alert("Succes!");
+      //alert("Succes!");
       this.parentElement.querySelector(".inputName").value = "";
       this.parentElement.querySelector(".inputMonto").value = "";
       getPresupuestoFromTable("true");
@@ -442,7 +442,7 @@ function insertIntoTable(elementRubro, elementMonto) {
     Id: lastID
   })
     .then(() => {
-      alert("Succes!");
+      //alert("Succes!");
       getGastosFromTable();
     })
     .catch((error) => {
@@ -602,7 +602,7 @@ function updateAhorrosFromTable(row){
     Fecha: sFecha,
   })
     .then(() => {
-      alert("Data updated succesfully");
+      //alert("Data updated succesfully");
       getAhorrosFromTable("true");
       getAhorrosFromTable();
     })
@@ -617,7 +617,7 @@ function deleteAhorrosFromTable(row){
   remove(ref(db, walletOwner+"Ahorros/"+dateDirectory+key), {
   })
     .then(() => {
-      alert("Data updated succesfully");
+      //alert("Data updated succesfully");
       getAhorrosFromTable("true");
       getAhorrosFromTable();
     })
@@ -660,7 +660,7 @@ function insertAhorroIntoTable() {
     Id: maxKey
   })
     .then(() => {
-      alert("Succes!");
+      //alert("Succes!");
       this.parentElement.querySelector(".inputName").value = "";
       this.parentElement.querySelector(".inputMonto").value = "";
       getAhorrosFromTable("true");
