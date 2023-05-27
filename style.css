@@ -670,9 +670,8 @@ button.bg-red:hover{
     #addButton {
         position: relative;
         transform: translateY(0);
-        left: 50%;
+        left: 0;
         top: 0;
-        width: fit-content;
-        margin-top: 0.4em;
+        margin-top: 0.5em;
     }
 }
