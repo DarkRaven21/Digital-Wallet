@@ -42,7 +42,9 @@ const agregarAhorro = document.querySelector("#newAhorro");
 const popUpAhorroInside = document.querySelector("#pop-up-ahorro").querySelector(".inside-pop-up");
 const passwordInput = document.getElementById("password");
 const cambiarPsw = document.getElementById("cambiarPsw");
-const passwordIcon = document.querySelector(".changePsw");
+const optionsButton = document.querySelector(".optionsBtn");
+const changePwdButton = document.getElementById("changePswOption");
+const monthlyChartButton = document.getElementById("monthlyChartOption")
 
 
 var weekOfMonth = Math.ceil(new Date().getDate() / 7);
@@ -84,8 +86,13 @@ abrirAhorros.popUpId = '#pop-up-ahorro';
 agregarAhorro.addEventListener("click", insertAhorroIntoTable);
 popUpAhorroInside.addEventListener('click', getEditAhorro);
 
-passwordIcon.addEventListener("click", openPopUp);
-passwordIcon.popUpId = '#pop-up-cambiarPsw';
+optionsButton.addEventListener("click", openPopUp);
+optionsButton.popUpId = '#pop-up-options';
+
+changePwdButton.addEventListener("click", openPopUp);
+changePwdButton.popUpId = '#pop-up-cambiarPsw';
+
+monthlyChartButton.addEventListener("click", openMonthlyChart)
 
 //Getting Rubros
 buildSelectOptions('Rubros/', select);
@@ -411,6 +418,33 @@ function showAddButton(){
   } else {
     addButton.classList.add("hidden");
   }
+}
+
+function getGastosFromTable() {
+  clearGrid('.resumen-gasto', ".sub-title");
+  const dbref = ref(db);
+
+  get(child(dbref, walletOwner+"Gastos/"+dateDirectory))
+    .then((snapshot) => {
+      snapshot.forEach(childSnapshot => {
+
+        let gridLine = document.createElement('div');
+        let divRubro = childSnapshot.val().Rubro;
+        let divMonto = childSnapshot.val().Monto;
+  
+        gridLine.setAttribute("title", childSnapshot.val().Fecha);
+        gridLine.classList.add("grid-line");
+        gridLine.dataset.week = childSnapshot.val().Semana;
+        gridLine.id = childSnapshot.val().Id;
+        gridLine.innerHTML = '<div class="rubro">'+divRubro+'</div><div class="monto">'+divMonto+'</div>';
+
+        appendToGastos(gridLine);
+      });
+    })
+    .catch((error) => {
+      alert(error)
+    }
+  )
 }
 
 function addToList(){
@@ -739,6 +773,7 @@ function getNewDb(){
     getPresupuestoFromTable();
     getAhorrosFromTable();
     password.value = "";
+    getTotal();
 }
 
 function buildSelectOptions(path, select) {
@@ -750,33 +785,6 @@ function buildSelectOptions(path, select) {
         let sOption = document.createElement('option');
         sOption.innerHTML = '<option value="'+childSnapshot.val()+'">'+childSnapshot.val()+'</option>';
         select.appendChild(sOption);
-      });
-    })
-    .catch((error) => {
-      alert(error)
-    }
-  )
-}
-
-function getGastosFromTable() {
-  clearGrid('.resumen-gasto', ".sub-title");
-  const dbref = ref(db);
-
-  get(child(dbref, walletOwner+"Gastos/"+dateDirectory))
-    .then((snapshot) => {
-      snapshot.forEach(childSnapshot => {
-
-        let gridLine = document.createElement('div');
-        let divRubro = childSnapshot.val().Rubro;
-        let divMonto = childSnapshot.val().Monto;
-  
-        gridLine.setAttribute("title", childSnapshot.val().Fecha);
-        gridLine.classList.add("grid-line");
-        gridLine.dataset.week = childSnapshot.val().Semana;
-        gridLine.id = childSnapshot.val().Id;
-        gridLine.innerHTML = '<div class="rubro">'+divRubro+'</div><div class="monto">'+divMonto+'</div>';
-
-        appendToGastos(gridLine);
       });
     })
     .catch((error) => {
@@ -873,3 +881,123 @@ function insertPswIntoDB(password){
       alert(error);
     })
 }
+
+
+//CHART
+var isResumenOpen = 'true';
+var isMonthlyChartOpen = 'false';
+
+function openMonthlyChart(){
+  toggleResumenCliente();
+  getGastosForChart();
+  toggleMonthlyChart();
+}
+
+function toggleResumenCliente(){
+  let resumen = document.querySelectorAll("#resumen-cliente");
+
+  if (isResumenOpen == 'true'){
+    resumen.forEach(item => {
+      item.classList.add('hidden');
+    })
+    isResumenOpen = 'false'
+  } else {
+    resumen.forEach(item => {
+      item.classList.remove('hidden');
+    })
+    isResumenOpen = 'true'
+  }
+}
+
+function toggleMonthlyChart(){
+  console.log('here');
+  let monthlyChart = document.getElementById("pieChart");
+  if (isMonthlyChartOpen == "true"){
+    monthlyChart.classList.add("hidden");
+    isMonthlyChartOpen = 'false';
+  } else {
+    monthlyChart.classList.remove("hidden");
+    isMonthlyChartOpen = 'true'
+  }
+}
+
+function getGastosForChart() {
+    const dbref = ref(db);
+    var gArray = [];
+  
+    get(child(dbref, walletOwner+"Gastos/"+dateDirectory))
+      .then((snapshot) => {
+        snapshot.forEach(childSnapshot => {
+  
+          let gRubro = childSnapshot.val().Rubro;
+          let gMonto = childSnapshot.val().Monto;
+    
+          let item = {
+            "Rubro": gRubro,
+            "Monto": gMonto
+          }
+
+          gArray.push(item);
+        });
+        addParts(gArray);
+      })
+      .catch((error) => {
+        alert(error)
+      }
+    )
+  }
+
+  function addParts(data){
+    const transformed = [];
+
+    data.forEach(item => {
+      item.Monto = parseInt(item.Monto);
+      const exist = transformed.find(t => t.Rubro == item.Rubro)
+      if (exist)
+        exist.Monto += item.Monto;
+      else
+        transformed.push(item);
+    })
+
+
+    buildMonthlyGastosChart(transformed)
+  }
+
+  function buildMonthlyGastosChart(data){
+    const arrayRubro = [];
+    const arrayMonto = [];
+
+    data.forEach(item => {
+      arrayRubro.push(item.Rubro);
+      arrayMonto.push(item.Monto);
+    });
+
+    new Chart("monthlyChart", {
+      type: "pie",
+      data: {
+          labels: arrayRubro,
+          datasets: [{
+              backgroundColor: getColors(data.length),
+              data: arrayMonto
+          }]
+      },
+      options: {
+          hover: {mode: null}, //Esto es para evitar que cambie de color en hover
+          title: {
+              display: true,
+              text: `Gastos del mes ${thisMonth} del año ${thisYear}`
+          }
+      }
+    });
+  }
+
+  function getColors(num){
+    let hue = 0;
+    let colors = []
+    for (let j = 0; j < num; j++) {
+      let color = "hsl(" + hue + ",100%,50%)"      
+      colors.push(color)      
+      hue += 500
+    }
+    return colors;
+  }

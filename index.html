@@ -10,13 +10,14 @@
     <script src="https://kit.fontawesome.com/5bca3361cd.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <!-- Sacar hidden a Main -->
     <main id="main" class="home-page">
     
         <div id="right-body" data-aos="fade-down">
             <div id="container">
                 <div id="title-container" class="rounded-2">
                     <div id="dbName"></div>
-                    <i class="fa-solid fa-key changePsw"></i>
+                    <i class="fa-solid fa-key optionsBtn"></i>
                 </div>
                 <div id="title-container" class="rounded-2 fecha-resumen">
                     <div>Resumen al <span id="fechaHoy"></span></div>
@@ -85,12 +86,23 @@
                     <option value="BrunoYRomi/">Bruno y Romi</option>
                     <option value="Yesi/">Yesi</option>
                     <option value="MariaYFede/">Maria y Fede</option>
+                    <option value="Vero/">Vero</option>
                 </select>
             </label>
             <label for="password">Contraseña
                 <input type="password" name="password" id="password" maxlength="4">
             </label>
             <button id="enterBtn" class="button">Entrar</button>
+        </div>
+    </div>
+
+    <div id="pop-up-options" class="hidden">
+        <div class="inside-pop-up">
+            <button class="closeBtn">X</button>
+            <button id="changePswOption">Cambiar contraseña</button>
+            <button id="monthlyChartOption">Ver gráfica mensual</button>
+            <button>Ver histórico</button>
+            <button>Crear nuevo rubro</button>
         </div>
     </div>
 
@@ -141,10 +153,12 @@
         </div>
     </div>
 
-    <!-- TENGO QUE HACER QUE EL INPUT DE LA CONTRASENIA SE REINICIE AL CAMBIAR EL SELECT. TENGO QUE PONER LA LOGICA -->
-    <!-- TENGO QUE HACER LA PARTE DE AHORRO AHORA Y RESOLVER COMO HACER LO DEL PRESUPUESTO SEMANAL EN GETTOTAL -->
+    <div id="pieChart" class="hidden">
+        <canvas id="monthlyChart" style="width:100%;max-width:900px"></canvas>
+    </div>
 
-    <script type="module" src="script.js"></script>
+    <!-- <script type="module" src="script.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </body>
 </html>
 

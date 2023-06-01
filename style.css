@@ -118,13 +118,14 @@ button {
     grid-column: span 2;
     display: grid;
     gap: 0.5em;
+    min-width: 200px;
 }
 
 #title-container.fecha-resumen {
     font-size: 14px;
 }
 
-#title-container .changePsw {
+#title-container .optionsBtn {
     position: absolute;
     right: 15px;
     top: 50%;
@@ -137,7 +138,7 @@ button {
     font-size: 0.8em;
 }
 
-#title-container .changePsw:hover {
+#title-container .optionsBtn:hover {
     background: #d7d6e1;
 }
 
@@ -263,7 +264,7 @@ button {
     transform: translateY(-50%);
 }
 
-.hidden {
+body .hidden {
     display: none !important;
 }
 
@@ -318,7 +319,8 @@ button {
 #pop-up-ingreso, 
 #pop-up-presupuesto,
 #pop-up-ahorro,
-#pop-up-cambiarPsw {
+#pop-up-cambiarPsw,
+#pop-up-options {
     position: fixed;
     top: 0;
     left: 0;
@@ -347,6 +349,7 @@ button {
 
 .inside-pop-up select {
     width: fit-content;
+    padding-inline: 5px;
     text-transform: uppercase;
     background-color: slateblue;
     color: #ffffff;
@@ -377,7 +380,7 @@ button {
 
 .inside-pop-up button:hover:not(.walletBtn) {
     background: #b3acac;
-    border: solid 1px #b3acac;
+    border: solid 2px #b3acac;
 }
 
 /* PopUp Ingreso */
@@ -608,6 +611,10 @@ button.bg-red:hover{
     color: white;
     border-color: var(--parentHover)!important;
     background-color: var(--parentHover)!important;
+}
+
+#monthlyChart{
+    margin: auto;
 }
 
 @media(max-width: 500px) {
