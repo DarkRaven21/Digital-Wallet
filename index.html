@@ -17,10 +17,29 @@
             <div id="container">
                 <div id="title-container" class="rounded-2">
                     <div id="dbName"></div>
-                    <i class="fa-solid fa-key optionsBtn"></i>
+                    <i class="fa-solid fa-bars optionsBtn"></i>
                 </div>
                 <div id="title-container" class="rounded-2 fecha-resumen">
                     <div>Resumen al <span id="fechaHoy"></span></div>
+                </div>
+                <div id="title-container" class="rounded-2 monthly-chart hidden">
+                    <label for="select-month">
+                        Ver gráfica de:
+                        <select name="" id="select-month">
+                            <option value="0">Enero</option>
+                            <option value="1">Febrero</option>
+                            <option value="2">Marzo</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Mayo</option>
+                            <option value="5">Junio</option>
+                            <option value="6">Julio</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Setiembre</option>
+                            <option value="9">Octubre</option>
+                            <option value="10">Noviembre</option>
+                            <option value="11">Diciembre</option>
+                        </select>
+                    </label>
                 </div>
                 <div id="resumen-cliente" class="card resumen-ingreso">
                     <div class="sub-title">Ingresos</div>
@@ -99,10 +118,10 @@
     <div id="pop-up-options" class="hidden">
         <div class="inside-pop-up">
             <button class="closeBtn">X</button>
-            <button id="changePswOption">Cambiar contraseña</button>
-            <button id="monthlyChartOption">Ver gráfica mensual</button>
-            <button>Ver histórico</button>
-            <button>Crear nuevo rubro</button>
+            <button id="changePswOption" class="btn-border-none">Cambiar contraseña</button>
+            <button id="monthlyChartOption" class="btn-border-none">Ver gráfica mensual</button>
+            <button class="btn-border-none">Ver histórico</button>
+            <button class="btn-border-none">Crear nuevo rubro</button>
         </div>
     </div>
 
@@ -148,7 +167,11 @@
             <button class="closeBtn">X</button>
             <p class="pop-up-title">PRESUPUESTOS</p>
             <div data-key="" class="div-line addToTable">
-                <input class="inputName" type="text" placeholder="Nombre"><input class="inputMonto" placeholder="Monto"><button id="newPresupuesto">Agregar</button>
+                <select name="presupuesto-ingresar" id="presupuesto-ingresar" class="inputName">
+                    <option value="0" selected="selected">Elegir</option>
+                    <!-- <option value="Delivery">Delivery</option>
+                    <option value="Salidas">Salidas</option> -->
+                </select><input class="inputMonto" placeholder="Monto"><button id="newPresupuesto">Agregar</button>
             </div>
         </div>
     </div>

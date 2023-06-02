@@ -25,6 +25,8 @@ import {getDatabase, set, get, update, remove, ref, child} from "https://www.gst
 
 const fecha = document.getElementById("fechaHoy");
 const select = document.getElementById("gasto-ingresar");
+const selectPresupuesto = document.getElementById("presupuesto-ingresar")
+const selectMonth = document.getElementById("select-month");
 const gastoMonto = document.getElementById("gasto-monto");
 const addButton = document.getElementById("addButton");
 const ownerInput = document.getElementById("walletOwner");
@@ -60,6 +62,7 @@ assignCloseBtn();
 var sFecha = new Date().toLocaleString().split(",")[0];
 
 fecha.textContent = sFecha;
+selectMonth.value = thisMonth;
 
 select.addEventListener("change", showAddButton);
 addButton.addEventListener("click", addToList);
@@ -92,10 +95,14 @@ optionsButton.popUpId = '#pop-up-options';
 changePwdButton.addEventListener("click", openPopUp);
 changePwdButton.popUpId = '#pop-up-cambiarPsw';
 
-monthlyChartButton.addEventListener("click", openMonthlyChart)
+monthlyChartButton.addEventListener("click", openMonthlyChart);
+selectMonth.addEventListener("change", function() {
+  clearCanvasForChart('#pieChart', 'monthlyChart');
+})
 
 //Getting Rubros
 buildSelectOptions('Rubros/', select);
+buildSelectOptions('Rubros/', selectPresupuesto);
 //Getting Gastos
 //getGastosFromTable();
 
@@ -386,8 +393,8 @@ function insertPresupuestoIntoTable() {
   let elementName = this.parentElement.querySelector(".inputName").value;
   let elementMonto = this.parentElement.querySelector(".inputMonto").value;
 
-  if (elementName == "" || elementMonto == ""){
-    alert("Debes completar Nombre y Monto")
+  if (elementName == "0" || elementMonto == "" || elementName == ""){
+    alert("Debes elegir una opción y asignar un monto")
     return;
   }
 
@@ -801,9 +808,11 @@ function appendToPopUp(line, parentElement){
 function clearGrid(parentElement, titleElement){
   let parentNode = document.querySelector(parentElement);
   let currentElement = parentNode.querySelector(titleElement);
-  while (!!currentElement.nextElementSibling) {
-    currentElement.nextElementSibling.remove();
-  };
+  if (currentElement != null){
+    while (!!currentElement.nextElementSibling) {
+      currentElement.nextElementSibling.remove();
+    };
+  }
 }
 
 function checkPassword(passwordFromTable){
@@ -889,22 +898,25 @@ var isMonthlyChartOpen = 'false';
 
 function openMonthlyChart(){
   toggleResumenCliente();
-  getGastosForChart();
+  clearCanvasForChart('#pieChart', 'monthlyChart');
   toggleMonthlyChart();
 }
 
 function toggleResumenCliente(){
   let resumen = document.querySelectorAll("#resumen-cliente");
+  let fechaResumen = document.querySelector(".fecha-resumen");
 
   if (isResumenOpen == 'true'){
     resumen.forEach(item => {
       item.classList.add('hidden');
     })
+    fechaResumen.classList.add("hidden");
     isResumenOpen = 'false'
   } else {
     resumen.forEach(item => {
       item.classList.remove('hidden');
     })
+    fechaResumen.classList.remove("hidden");
     isResumenOpen = 'true'
   }
 }
@@ -912,20 +924,29 @@ function toggleResumenCliente(){
 function toggleMonthlyChart(){
   console.log('here');
   let monthlyChart = document.getElementById("pieChart");
+  let monthlyChartTitle = document.querySelector(".monthly-chart");
+  let openChartButton = document.getElementById("monthlyChartOption")
+
   if (isMonthlyChartOpen == "true"){
     monthlyChart.classList.add("hidden");
+    monthlyChartTitle.classList.add("hidden");
+    openChartButton.textContent = "Ver gráfica mensual"
     isMonthlyChartOpen = 'false';
   } else {
     monthlyChart.classList.remove("hidden");
-    isMonthlyChartOpen = 'true'
+    monthlyChartTitle.classList.remove("hidden");
+    openChartButton.textContent = "Ver resumen de gastos"
+    isMonthlyChartOpen = 'true';
   }
 }
 
 function getGastosForChart() {
     const dbref = ref(db);
     var gArray = [];
+    const selectedMonth = document.getElementById("select-month").value;
+    let getSelectedMonthDirectory = thisYear+"/"+selectedMonth+"/";
   
-    get(child(dbref, walletOwner+"Gastos/"+dateDirectory))
+    get(child(dbref, walletOwner+"Gastos/"+getSelectedMonthDirectory))
       .then((snapshot) => {
         snapshot.forEach(childSnapshot => {
   
@@ -939,7 +960,7 @@ function getGastosForChart() {
 
           gArray.push(item);
         });
-        addParts(gArray);
+        addParts(gArray, parseInt(selectedMonth)+1);
       })
       .catch((error) => {
         alert(error)
@@ -947,7 +968,7 @@ function getGastosForChart() {
     )
   }
 
-  function addParts(data){
+  function addParts(data, selectedMonth){
     const transformed = [];
 
     data.forEach(item => {
@@ -960,10 +981,10 @@ function getGastosForChart() {
     })
 
 
-    buildMonthlyGastosChart(transformed)
+    buildMonthlyGastosChart(transformed, selectedMonth)
   }
 
-  function buildMonthlyGastosChart(data){
+  function buildMonthlyGastosChart(data, selectedMonth){
     const arrayRubro = [];
     const arrayMonto = [];
 
@@ -985,7 +1006,7 @@ function getGastosForChart() {
           hover: {mode: null}, //Esto es para evitar que cambie de color en hover
           title: {
               display: true,
-              text: `Gastos del mes ${thisMonth} del año ${thisYear}`
+              text: `Gastos del mes ${selectedMonth} del año ${thisYear}`
           }
       }
     });
@@ -1000,4 +1021,15 @@ function getGastosForChart() {
       hue += 500
     }
     return colors;
+  }
+
+  function clearCanvasForChart(parentQuery, childId){
+    let parent = document.querySelector(parentQuery);
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+    let newCanvas = document.createElement('canvas');
+    newCanvas.id = childId;
+    parent.appendChild(newCanvas);
+    getGastosForChart();
   }

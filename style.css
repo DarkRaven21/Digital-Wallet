@@ -72,6 +72,10 @@ button {
     font-size: 14px;
 }
 
+canvas {
+    max-width: 900px;
+}
+
 .home-page {
     display: flex;
 }
@@ -121,7 +125,8 @@ button {
     min-width: 200px;
 }
 
-#title-container.fecha-resumen {
+#title-container.fecha-resumen,
+#title-container.monthly-chart {
     font-size: 14px;
 }
 
@@ -130,12 +135,11 @@ button {
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    background: #c2bfdb;
-    border: black 2px solid;
+    background: slateblue;
+    color: white;
     padding: 5px;
-    border-radius: 100vh;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 0.8em;
 }
 
 #title-container .optionsBtn:hover {
@@ -335,7 +339,7 @@ body .hidden {
 /* PopUp Entrar */
 .inside-pop-up {
     position: absolute;
-    padding: 1.5em 5em;
+    padding: 1.5em 3.5em;
     background-color: slateblue;
     color: #ffffff;
     border-radius: 16px;
@@ -343,11 +347,11 @@ body .hidden {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2em;
+    gap: 1.5em;
     font-size: 1em;
 }  
 
-.inside-pop-up select {
+.inside-pop-up select:not(#presupuesto-ingresar) {
     width: fit-content;
     padding-inline: 5px;
     text-transform: uppercase;
@@ -355,6 +359,11 @@ body .hidden {
     color: #ffffff;
     border: solid 1px;
     border-radius: 4px;
+}
+
+#select-month {
+    padding-inline: 5px;
+    width: fit-content;
 }
 
 #pop-up label,
@@ -438,6 +447,11 @@ body .hidden {
     background-color: #5a7799;
     gap: 0.8em;
     padding: 1em 2em;
+}
+
+#presupuesto-ingresar {
+    width: 100px;
+    text-overflow: ellipsis;
 }
 
 #pop-up-presupuesto p,
@@ -615,6 +629,33 @@ button.bg-red:hover{
 
 #monthlyChart{
     margin: auto;
+}
+
+.monthly-chart{
+    margin-bottom: 1em;
+}
+
+/* Option Buttons */
+#pop-up-options {
+    --parentColor: #624c64;
+    --parentHover: #a06ba5;
+    --parentBtnWidth: 185px;
+}
+.btn-border-none {
+    cursor: pointer;
+    min-width: var(--parentBtnWidth);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    color: white;
+    background: var(--parentColor);
+}
+
+.btn-border-none:hover {
+    border: none!important;
+    background: var(--parentHover)!important;
 }
 
 @media(max-width: 500px) {
