@@ -772,15 +772,19 @@ function getNewDb(){
     let dbName = document.getElementById('dbName');
     dbName.textContent = ownerInput.options[ownerInput.selectedIndex].textContent;
     walletOwner = ownerInput.value;
-    clearGrid(".resumen-gasto", ".sub-title");
-    clearGrid(".resumen-ingreso", ".sub-title");
-    clearGrid(".resumen-presupuesto", ".sub-title");
-    getGastosFromTable();
-    getIngresosFromTable();
-    getPresupuestoFromTable();
-    getAhorrosFromTable();
+    //loadPage();
     password.value = "";
-    getTotal();
+}
+
+function loadPage(){
+  clearGrid(".resumen-gasto", ".sub-title");
+  clearGrid(".resumen-ingreso", ".sub-title");
+  clearGrid(".resumen-presupuesto", ".sub-title");
+  getGastosFromTable();
+  getIngresosFromTable();
+  getPresupuestoFromTable();
+  getAhorrosFromTable();
+  getTotal();
 }
 
 function buildSelectOptions(path, select) {
@@ -820,6 +824,7 @@ function checkPassword(passwordFromTable){
 
   if (password == passwordFromTable){
     document.getElementById("pop-up").classList.add("hidden");
+    loadPage();
   } else {
     alert("La contraseña no es correcta. Pruebe otra vez");
   }
