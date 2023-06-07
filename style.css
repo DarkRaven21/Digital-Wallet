@@ -644,6 +644,7 @@ button.bg-red:hover{
 .btn-border-none {
     cursor: pointer;
     min-width: var(--parentBtnWidth);
+    width: auto;
     border: none;
     padding: 0.5em 1em;
     border-radius: 8px;

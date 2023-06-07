@@ -6,12 +6,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebas
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA9B_9ctag0CSC2nuoa01oPY964kAdRsRQ",
-  authDomain: "billetera-web.firebaseapp.com",
-  projectId: "billetera-web",
-  storageBucket: "billetera-web.appspot.com",
-  messagingSenderId: "32452057885",
-  appId: "1:32452057885:web:e8ff9cb5f478e9d1ab1ff4"
+  apiKey: "AIzaSyB5ntuLA7UzZbH8Mv-F7DYONoHs1_AOaqQ",
+  authDomain: "digital-wallet-8192e.firebaseapp.com",
+  databaseURL: "https://digital-wallet-8192e-default-rtdb.firebaseio.com",
+  projectId: "digital-wallet-8192e",
+  storageBucket: "digital-wallet-8192e.appspot.com",
+  messagingSenderId: "805555071594",
+  appId: "1:805555071594:web:2c86c1aa05f27fbf653813",
+  measurementId: "G-DBZDLNLV7E"
 };
 
 // Initialize Firebase
