@@ -44,12 +44,13 @@ const popUpPresupuestoInside = document.querySelector("#pop-up-presupuesto").que
 const abrirAhorros = document.querySelector(".resumen-ahorro").querySelector(".sub-title");
 const agregarAhorro = document.querySelector("#newAhorro");
 const popUpAhorroInside = document.querySelector("#pop-up-ahorro").querySelector(".inside-pop-up");
+const resumenGasto = document.querySelector('.resumen-gasto');
+const popUpGastoInside = document.querySelector("#pop-up-gasto").querySelector(".inside-pop-up");
 const passwordInput = document.getElementById("password");
 const cambiarPsw = document.getElementById("cambiarPsw");
 const optionsButton = document.querySelector(".optionsBtn");
 const changePwdButton = document.getElementById("changePswOption");
-const monthlyChartButton = document.getElementById("monthlyChartOption")
-
+const monthlyChartButton = document.getElementById("monthlyChartOption");
 
 var weekOfMonth = Math.ceil(new Date().getDate() / 7);
 var walletOwner = '';
@@ -90,6 +91,9 @@ abrirAhorros.addEventListener("click", openPopUp);
 abrirAhorros.popUpId = '#pop-up-ahorro';
 agregarAhorro.addEventListener("click", insertAhorroIntoTable);
 popUpAhorroInside.addEventListener('click', getEditAhorro);
+
+resumenGasto.addEventListener('click', checkIfChild);
+popUpGastoInside.addEventListener('click', getEditGasto);
 
 optionsButton.addEventListener("click", openPopUp);
 optionsButton.popUpId = '#pop-up-options';
@@ -560,6 +564,101 @@ function getLastId(){
   }
 }
 
+function checkIfChild(e){
+  const gridLine = e.target.parentNode;
+  if (!gridLine.matches('.grid-line')){
+    return;
+  } else {
+    openPopUpAndEditGasto(gridLine.id);
+  }
+}
+
+function openPopUpAndEditGasto(id){
+  openGastoPopUp();
+  getThisGastoFromTable(id);
+}
+
+function openGastoPopUp(){
+  document.querySelector('#pop-up-gasto').classList.remove("hidden");
+  clearGrid('#pop-up-gasto', ".pop-up-title");
+}
+
+function getThisGastoFromTable(id){
+  const dbref = ref(db);
+
+  clearGrid('#pop-up-gasto', ".pop-up-title")
+
+    get(child(dbref, walletOwner+"Gastos/"+dateDirectory+id))
+      .then((snapshot) => {
+        if (snapshot.exists()){
+          let gridLine = document.createElement('div');
+          let divName = snapshot.val().Rubro;
+          let divMonto = snapshot.val().Monto;
+    
+          gridLine.setAttribute("title", snapshot.val().Fecha);
+          gridLine.classList.add("div-line");
+          gridLine.dataset.key = snapshot.val().Id;
+          if(divMonto == 0){
+            gridLine.innerHTML = '<span>'+divName+'</span><input placeholder="'+divMonto+'"><button class="bg-red">Eliminar</button>';
+          } else {
+            gridLine.innerHTML = '<span>'+divName+'</span><input placeholder="'+divMonto+'"><button>Editar</button>';
+          }
+          appendToPopUp(gridLine, "#pop-up-gasto");
+        }
+      })
+      .catch((error) => {
+        alert(error)
+      }
+    )
+}
+
+function getEditGasto(e){
+  if (!e.target.matches('button')){return};
+  if (e.target.textContent=='Editar'){
+    let rowToEdit = e.target.parentNode;
+    updateGastosFromTable(rowToEdit);
+  } else if (e.target.textContent=='Eliminar'){
+    let rowToEdit = e.target.parentNode;
+    deleteGastosFromTable(rowToEdit);
+  }
+}
+
+function updateGastosFromTable(row){
+  let key = row.dataset.key;
+
+  let divMonto = row.querySelector("input").value;
+  if (divMonto == ""){
+    alert("Debes ingresar un monto o ingresar 0");
+    return;
+  }
+
+  update(ref(db, walletOwner+"Gastos/"+dateDirectory+key), {
+    Monto: divMonto,
+    Fecha: sFecha,
+  })
+    .then(() => {
+      getGastosFromTable();
+      getThisGastoFromTable(key);
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
+function deleteGastosFromTable(row){
+  let key = row.dataset.key;
+
+  remove(ref(db, walletOwner+"Gastos/"+dateDirectory+key), {
+  })
+    .then(() => {
+      getGastosFromTable();
+      document.getElementById('pop-up-gasto').classList.add('hidden');
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
 // Ahorros
 
 function getEditAhorro(e){
@@ -1014,6 +1113,13 @@ function getGastosForChart() {
           title: {
               display: true,
               text: `Gastos del mes ${selectedMonth} del año ${thisYear}`
+          },
+          legend: {
+            display: true,
+            labels: {
+              boxWidth: 10,
+              padding: 5,
+            }
           }
       }
     });
