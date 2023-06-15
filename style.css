@@ -189,6 +189,14 @@ canvas {
     max-width: none;
 }
 
+.resumen-gasto .grid-line {
+    cursor: pointer;
+}
+
+.resumen-gasto .grid-line:hover {
+    background-color: #ff692d!important;
+}
+
 .total-disponible .grid-line {
     grid-column: span 2;
 }
@@ -772,6 +780,8 @@ button.bg-red:hover{
         flex-direction: column!important;
         align-items: stretch!important;
     }
+
+
 
     .total-disponible {
         position: static;
