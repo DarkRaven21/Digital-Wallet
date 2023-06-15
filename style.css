@@ -362,6 +362,13 @@ body .hidden {
     border-radius: 4px;
 }
 
+.inside-pop-up span {
+    max-width: 140px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 #select-month {
     padding-inline: 5px;
     width: fit-content;
@@ -594,6 +601,10 @@ body .hidden {
 #pop-up-gasto .inside-pop-up input[type=text]{
     width: 90px;
     text-align: center;
+}
+
+#pop-up-gasto .addToTable {
+    grid-template-columns: 1fr;
 }
 
 /* ######################## */

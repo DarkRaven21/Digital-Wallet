@@ -580,13 +580,13 @@ function openPopUpAndEditGasto(id){
 
 function openGastoPopUp(){
   document.querySelector('#pop-up-gasto').classList.remove("hidden");
-  clearGrid('#pop-up-gasto', ".pop-up-title");
+  clearGrid('#pop-up-gasto', ".addToTable");
 }
 
 function getThisGastoFromTable(id){
   const dbref = ref(db);
 
-  clearGrid('#pop-up-gasto', ".pop-up-title")
+  clearGrid('#pop-up-gasto', ".addToTable")
 
     get(child(dbref, walletOwner+"Gastos/"+dateDirectory+id))
       .then((snapshot) => {
@@ -594,6 +594,7 @@ function getThisGastoFromTable(id){
           let gridLine = document.createElement('div');
           let divName = snapshot.val().Rubro;
           let divMonto = snapshot.val().Monto;
+          let divDate = snapshot.val().Fecha;
     
           gridLine.setAttribute("title", snapshot.val().Fecha);
           gridLine.classList.add("div-line");
@@ -604,12 +605,18 @@ function getThisGastoFromTable(id){
             gridLine.innerHTML = '<span>'+divName+'</span><input placeholder="'+divMonto+'"><button>Editar</button>';
           }
           appendToPopUp(gridLine, "#pop-up-gasto");
+          showDateInGastoPopup(divDate, '#pop-up-gasto');
         }
       })
       .catch((error) => {
         alert(error)
       }
     )
+}
+
+function showDateInGastoPopup(date, query){
+  let divLine = document.querySelector(query);
+  divLine.querySelector('.addToTable').textContent = date;
 }
 
 function getEditGasto(e){
