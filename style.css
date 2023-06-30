@@ -381,6 +381,12 @@ body .hidden {
     white-space: nowrap;
 }
 
+.resumen-presupuesto .rubro {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .inside-pop-up .link-button {
     cursor: pointer;
     text-decoration: underline;
