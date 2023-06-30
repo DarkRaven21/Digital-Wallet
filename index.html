@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Billetera Digital</title>
+    <title>Billetera Testeo</title>
     <script type="module" src="script.js"></script>
     <script src="https://kit.fontawesome.com/5bca3361cd.js" crossorigin="anonymous"></script>
 </head>
@@ -94,21 +94,36 @@
     </main><!-- End #main -->
     <!-- <button id="insertButton">Enviar</button> -->
     <div id="pop-up">
-        <div class="inside-pop-up">
+        <div class="inside-pop-up enterWallet">
             <label for="walletOwner">
                 Ingresar como:
-                <select name="walletOwner" id="walletOwner">
+                <!-- <select name="walletOwner" id="walletOwner">
                     <option value="BrunoYRomi/">Bruno y Romi</option>
                     <option value="Yesi/">Yesi</option>
                     <option value="MariaYFede/">Maria y Fede</option>
                     <option value="Vero/">Vero</option>
                     <option value="Carla/">Carla</option>
-                </select>
+                </select> -->
+                <input type="text" name="userName" id="userName">
             </label>
             <label for="password">Contraseña
                 <input type="password" name="password" id="password" maxlength="4">
             </label>
             <button id="enterBtn" class="button">Entrar</button>
+            <span id="registerBtn" class="link-button">Registrarme</span>
+        </div>
+        <div class="inside-pop-up newUser hidden">
+            <label for="newUser">
+                Usuario
+                <input type="text" name="newUserName" id="newUserName">
+            </label>
+            <label for="password">Contraseña
+                <input type="password" name="newUserPassword1" id="newUserPassword1" maxlength="4">
+            </label>
+            <label for="password">Repita Contraseña
+                <input type="password" name="newUserPassword2" id="newUserPassword2" maxlength="4">
+            </label>
+            <button id="newUserBtn" class="button">Registrar</button>
         </div>
     </div>
 

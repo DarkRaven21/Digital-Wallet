@@ -102,7 +102,7 @@ canvas {
     padding: 15px;
     font-size: 18px;
     font-weight: bold;
-    background-color: #f2f4f4;
+    background-color: #1dd3d3;
     border-color: #f2f4f4;
     text-align: center;
 }
@@ -358,7 +358,11 @@ body .hidden {
     align-items: center;
     gap: 1.5em;
     font-size: 1em;
-}  
+}
+
+.inside-pop-up.newUser {
+    background-color: #016666;
+}
 
 .inside-pop-up select:not(#presupuesto-ingresar) {
     width: fit-content;
@@ -377,6 +381,11 @@ body .hidden {
     white-space: nowrap;
 }
 
+.inside-pop-up .link-button {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 #select-month {
     padding-inline: 5px;
     width: fit-content;
@@ -390,7 +399,8 @@ body .hidden {
 }
 
 #pop-up input[type=password],
-#pop-up-cambiarPsw input[type=password] {
+#pop-up-cambiarPsw input[type=password],
+#pop-up input[type=text] {
     width: 122px;
     text-align: center;
     font-size: 1.2em;

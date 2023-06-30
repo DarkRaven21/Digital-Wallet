@@ -6,14 +6,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebas
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB5ntuLA7UzZbH8Mv-F7DYONoHs1_AOaqQ",
-  authDomain: "digital-wallet-8192e.firebaseapp.com",
-  databaseURL: "https://digital-wallet-8192e-default-rtdb.firebaseio.com",
-  projectId: "digital-wallet-8192e",
-  storageBucket: "digital-wallet-8192e.appspot.com",
-  messagingSenderId: "805555071594",
-  appId: "1:805555071594:web:2c86c1aa05f27fbf653813",
-  measurementId: "G-DBZDLNLV7E"
+  apiKey: "AIzaSyA9B_9ctag0CSC2nuoa01oPY964kAdRsRQ",
+  authDomain: "billetera-web.firebaseapp.com",
+  databaseURL: "https://billetera-web-default-rtdb.firebaseio.com",
+  projectId: "billetera-web",
+  storageBucket: "billetera-web.appspot.com",
+  messagingSenderId: "32452057885",
+  appId: "1:32452057885:web:e8ff9cb5f478e9d1ab1ff4"
 };
 
 // Initialize Firebase
@@ -31,6 +30,8 @@ const selectPresupuesto = document.getElementById("presupuesto-ingresar")
 const selectMonth = document.getElementById("select-month");
 const gastoMonto = document.getElementById("gasto-monto");
 const addButton = document.getElementById("addButton");
+const registerBtn = document.getElementById('registerBtn');
+const newUser = document.getElementById('newUserBtn');
 const ownerInput = document.getElementById("walletOwner");
 const thisYear = new Date().getFullYear();
 const thisMonth = new Date().getMonth();
@@ -69,13 +70,15 @@ selectMonth.value = thisMonth;
 
 select.addEventListener("change", showAddButton);
 addButton.addEventListener("click", addToList);
-ownerInput.addEventListener("change", getNewDb);
+//ownerInput.addEventListener("change", getNewDb);
 passwordInput.addEventListener("keypress", function(event){
   if (event.key == "Enter"){
     enterWallet();
   }
 })
 cambiarPsw.addEventListener("click", changePsw);
+newUser.addEventListener('click', insertUser);
+registerBtn.addEventListener('click', showNewUser);
 
 abrirIngresos.addEventListener("click", openPopUp);
 abrirIngresos.popUpId = '#pop-up-ingreso';
@@ -113,6 +116,76 @@ buildSelectOptions('Rubros/', selectPresupuesto);
 //getGastosFromTable();
 
 getLastId();
+
+//NUEVO USUARIO
+function insertUser(){
+  let newUserName = document.getElementById('newUserName').value;
+  let newUserPsw1 = document.getElementById('newUserPassword1').value;
+  let newUserPsw2 = document.getElementById('newUserPassword2').value;
+
+  if(checkNewUserInputs(newUserName, newUserPsw1, newUserPsw2) == "Valido"){
+    checkIfUserIsInTable(newUserName, newUserPsw1);
+  };
+}
+
+function checkNewUserInputs(user, psw1, psw2){
+  let regEx = /^[A-Za-z\s]{4,20}$/;
+
+  if (!regEx.test(user)){
+    return alert('Nombre de usuario inválido. Intente de nuevo');
+  }
+  else if (psw1.trim() == "" || psw1.length != 4){
+    return alert('La contraseña debe contener 4 caracteres');
+  }
+  else if (psw1 != psw2){
+    return alert("Las contraseñas no son iguales");
+  }
+  else {
+    return 'Valido';
+  }
+}
+
+function checkIfUserIsInTable(user, psw1){
+  const dbref = ref(db);
+  
+  get(child(dbref, 'Users/'+ user))
+  .then((snapshot) => {
+    if (snapshot.exists()){
+      alert('Ya existe nombre de usuario. Elige otro por favor')
+    } else {
+      insertUserIntoTable(user, psw1)
+    }
+  })
+}
+
+function insertUserIntoTable(user, psw1){
+  const dbref = ref(db);
+
+  set(ref(db, 'Users/' + user + "/Password/"), {
+    Password: psw1
+  })
+    .then(() => {
+      alert("El usuario se ha creado correctamente");
+      showEnterPop(user, psw1);
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
+function showNewUser(){
+  let parent = document.getElementById('pop-up');
+  parent.querySelector('.enterWallet').classList.add('hidden');
+  parent.querySelector('.newUser').classList.remove('hidden');
+}
+
+function showEnterPop(user, psw1){
+  let parent = document.getElementById('pop-up');
+  parent.querySelector('.enterWallet').classList.remove('hidden');
+  parent.querySelector('.newUser').classList.add('hidden');
+  parent.querySelector('#userName').value = user;
+  parent.querySelector('#password').value = psw1;
+}
 
 //INGRESOS
 function getEditIngreso(e){
@@ -878,9 +951,8 @@ function getPresupuesto(){
 
 function getNewDb(){
     let dbName = document.getElementById('dbName');
-    dbName.textContent = ownerInput.options[ownerInput.selectedIndex].textContent;
-    walletOwner = ownerInput.value;
-    //loadPage();
+    dbName.textContent = 'Billetera Digital';
+    walletOwner = 'Users/';
     password.value = "";
 }
 
@@ -893,6 +965,8 @@ function loadPage(){
   getPresupuestoFromTable();
   getAhorrosFromTable();
   getTotal();
+  let dbName = document.getElementById('dbName');
+  dbName.textContent = walletOwner.slice(6,-1);
 }
 
 function buildSelectOptions(path, select) {
@@ -931,27 +1005,37 @@ function checkPassword(passwordFromTable){
   let password = document.getElementById("password").value;
 
   if (password == passwordFromTable){
-    document.getElementById("pop-up").classList.add("hidden");
-    loadPage();
+    return "true";
   } else {
     alert("La contraseña no es correcta. Pruebe otra vez");
+    return 'false'
   }
 }
 
 function enterWallet(){
   const dbref = ref(db);
+  const userInput = document.getElementById("userName").value + '/';
+  console.log(userInput);
 
-    get(child(dbref, walletOwner +"Password/"))
+    get(child(dbref, 'Users/' + userInput + "Password/"))
     .then((snapshot)=>{
         if (snapshot.exists()){
-          checkPassword(snapshot.val().Password)
+          if (checkPassword(snapshot.val().Password) === "true"){
+            setUpWallet(`Users/${userInput}`);
+          }
         } else {
-            alert("Not data found");
+            alert("No existe un usuario con esas credenciales");
         }
     })
     .catch((error)=>{
         alert(error);
     })
+}
+
+function setUpWallet(user){
+  document.getElementById("pop-up").classList.add("hidden");
+  walletOwner = user;
+  loadPage();
 }
 
 function changePsw(){
