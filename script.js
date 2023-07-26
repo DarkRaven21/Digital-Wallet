@@ -48,6 +48,8 @@ const agregarAhorro = document.querySelector("#newAhorro");
 const popUpAhorroInside = document.querySelector("#pop-up-ahorro").querySelector(".inside-pop-up");
 const resumenGasto = document.querySelector('.resumen-gasto');
 const popUpGastoInside = document.querySelector("#pop-up-gasto").querySelector(".inside-pop-up");
+const abrirRubros = document.querySelector("#editRubros");
+const popUpRubroInside = document.querySelector("#pop-up-rubros").querySelector(".inside-pop-up");
 const passwordInput = document.getElementById("password");
 const cambiarPsw = document.getElementById("cambiarPsw");
 const optionsButton = document.querySelector(".optionsBtn");
@@ -96,6 +98,147 @@ abrirAhorros.popUpId = '#pop-up-ahorro';
 agregarAhorro.addEventListener("click", insertAhorroIntoTable);
 popUpAhorroInside.addEventListener('click', getEditAhorro);
 
+//Rubros
+abrirRubros.addEventListener("click", openPopUp);
+abrirRubros.popUpId = '#pop-up-rubros';
+//agregarRubro.addEventListener("click", insertRubroIntoTable);
+popUpRubroInside.addEventListener('click', getClickRubro);
+
+//Mover despues
+function getClickRubro(e){
+  if (!e.target.matches('button')){return};
+  if (e.target.textContent=='Agregar'){
+    let rowToEdit = e.target.parentNode;
+    insertRubroIntoTable();
+  } else if (e.target.textContent=='Editar'){
+    let rowToEdit = e.target.parentNode;
+    updateRubroFromTable(rowToEdit);
+  } else if (e.target.textContent=='Eliminar'){
+    let rowToEdit = e.target.parentNode;
+    deleteRubroFromTable(rowToEdit);
+  }
+}
+
+function insertRubroIntoTable(){
+  const resumenRubro = document.querySelector("#pop-up-rubros");
+  const divLines = resumenRubro.querySelectorAll(".div-line");
+  var maxKey = 0;
+
+  for (let i=0; i<divLines.length; i++){
+      let key = divLines[i].dataset.key;
+      if (parseInt(key) > maxKey){
+        maxKey = parseInt(key);
+      }
+  }
+
+  maxKey++;
+  let elementName = resumenRubro.querySelector("#rubroName").value;
+  let elementIsChecked = resumenRubro.querySelector("#rubroCheckbox").checked;
+
+  if (elementName == ""){
+    alert("Debes elegir un nombre")
+    return;
+  }
+
+  set(ref(db, walletOwner +"Rubros/" + maxKey), {
+    Rubro: elementName,
+    Oculto: elementIsChecked,
+    id: maxKey
+  })
+    .then(() => {
+      //alert("Succes!");
+      resumenRubro.querySelector("#rubroName").value = '';
+      resumenRubro.querySelector("#rubroCheckbox").checked = false;
+      getRubrosFromTable("true");
+      buildSelectOptions(walletOwner+'/Rubros/', select);
+      buildSelectOptions(walletOwner+'/Rubros/', selectPresupuesto);
+    })
+    .catch((error) => {
+      alert(error);
+      maxKey--;
+    })
+}
+
+function updateRubroFromTable(row){
+  let key = row.dataset.key;
+
+  let divNombre = row.querySelector("input").value;
+  let isOculto = row.querySelector("input[type='checkbox']").checked;
+
+  if (divNombre == "" && isOculto == false){
+    alert("Debes ingresar un nombre o marcarlo como oculto para dejar este campo vacio");
+    return;
+  }
+
+  update(ref(db, walletOwner+"Rubros/"+key), {
+    Rubro: divNombre,
+    Oculto: isOculto,
+    id: key
+  })
+    .then(() => {
+      //alert("Presupuesto agregado correctamente");
+      getRubrosFromTable('true');
+      buildSelectOptions(walletOwner+'/Rubros/', select);
+      buildSelectOptions(walletOwner+'/Rubros/', selectPresupuesto);
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
+function deleteRubroFromTable(row){
+  let key = row.dataset.key;
+
+  remove(ref(db, walletOwner+"Rubros/"+key), {
+  })
+    .then(() => {
+      getRubrosFromTable("true");
+      buildSelectOptions(walletOwner+'/Rubros/', select);
+      buildSelectOptions(walletOwner+'/Rubros/', selectPresupuesto);
+    })
+    .catch((error) => {
+      alert(error);
+    })
+}
+
+function getRubrosFromTable(isPopUp) {
+  const dbref = ref(db);
+
+  if (isPopUp == "true"){
+    clearGrid('#pop-up-rubros', ".addToTable")
+
+    get(child(dbref, walletOwner+"Rubros/"))
+      .then((snapshot) => {
+        snapshot.forEach(childSnapshot => {
+  
+          let gridLine = document.createElement('div');
+          let divName = childSnapshot.val().Rubro;
+          let isChecked = '';
+          
+          if (childSnapshot.val().Oculto == true){
+            isChecked = 'checked';
+            gridLine.classList.add('bg-gray');
+          }
+    
+          //gridLine.setAttribute("title", childSnapshot.val().Fecha);
+          gridLine.classList.add("div-line");
+          gridLine.dataset.key = childSnapshot.val().id;
+          if (divName == ''){
+            gridLine.innerHTML = '<input placeholder="'+divName+'"><input type="checkbox"'+ isChecked +'><button class="bg-red">Eliminar</button>';
+          } else {
+            gridLine.innerHTML = '<input placeholder="'+divName+'"><input type="checkbox"'+ isChecked +'><button>Editar</button>';
+          }
+          gridLine.querySelector('input').value = divName;
+          appendToPopUp(gridLine, "#pop-up-rubros");
+        });
+      })
+      .catch((error) => {
+        alert(error)
+      }
+    )
+  }
+}
+
 resumenGasto.addEventListener('click', checkIfChild);
 popUpGastoInside.addEventListener('click', getEditGasto);
 
@@ -110,9 +253,7 @@ selectMonth.addEventListener("change", function() {
   clearCanvasForChart('#pieChart', 'monthlyChart');
 })
 
-//Getting Rubros
-buildSelectOptions('Rubros/', select);
-buildSelectOptions('Rubros/', selectPresupuesto);
+
 //Getting Gastos
 //getGastosFromTable();
 
@@ -172,6 +313,27 @@ function insertUserIntoTable(user, psw1){
     .catch((error) => {
       alert(error);
     })
+
+    //new
+    get(child(dbref, 'Rubros/'))
+    .then((snapshot) => {
+      let index = 0;
+      snapshot.forEach(childSnapshot => {
+        copyRubrosFromTable(childSnapshot.val(), index, user);
+        index++;
+        })
+      })
+      .catch((error) => {
+        alert(error);
+      })
+}
+
+function copyRubrosFromTable(name, index, user){
+  set(ref(db, 'Users/' + user + '/Rubros/' + index), {
+    Rubro: name,
+    Oculto: false,
+    id: index
+  });
 }
 
 function showNewUser(){
@@ -922,6 +1084,7 @@ function openPopUp(event){
   getIngresosFromTable("true");
   getPresupuestoFromTable("true");
   getAhorrosFromTable("true");
+  getRubrosFromTable("true");
 }
 
 function getPresupuesto(){
@@ -966,6 +1129,9 @@ function loadPage(){
   getPresupuestoFromTable();
   getAhorrosFromTable();
   getTotal();
+  //Getting Rubros
+  buildSelectOptions(walletOwner+'/Rubros/', select);
+  buildSelectOptions(walletOwner+'/Rubros/', selectPresupuesto);
   let dbName = document.getElementById('dbName');
   dbName.textContent = walletOwner.slice(6,-1);
 }
@@ -973,12 +1139,16 @@ function loadPage(){
 function buildSelectOptions(path, select) {
   const dbref = ref(db);
 
+  select.innerHTML = '<option value="0" selected="selected">Elegir</option>'
+
   get(child(dbref, path))
     .then((snapshot) => {
       snapshot.forEach(childSnapshot => {
-        let sOption = document.createElement('option');
-        sOption.innerHTML = '<option value="'+childSnapshot.val()+'">'+childSnapshot.val()+'</option>';
-        select.appendChild(sOption);
+        if (childSnapshot.val().Oculto != true){
+          let sOption = document.createElement('option');
+          sOption.innerHTML = '<option value="'+childSnapshot.val().Rubro+'">'+childSnapshot.val().Rubro+'</option>';
+          select.appendChild(sOption);
+        }
       });
     })
     .catch((error) => {
@@ -1016,7 +1186,6 @@ function checkPassword(passwordFromTable){
 function enterWallet(){
   const dbref = ref(db);
   const userInput = document.getElementById("userName").value + '/';
-  console.log(userInput);
 
     get(child(dbref, 'Users/' + userInput + "Password/"))
     .then((snapshot)=>{

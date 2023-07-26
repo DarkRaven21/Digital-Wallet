@@ -333,7 +333,8 @@ body .hidden {
 #pop-up-ahorro,
 #pop-up-cambiarPsw,
 #pop-up-options,
-#pop-up-gasto {
+#pop-up-gasto,
+#pop-up-rubros {
     position: fixed;
     top: 0;
     left: 0;
@@ -631,6 +632,61 @@ body .hidden {
     grid-template-columns: 1fr!important;
 }
 
+/* Pop Up Rubros */
+#pop-up-rubros {
+    overflow-y: scroll;
+}
+
+#pop-up-rubros .inside-pop-up{
+    position: absolute;
+    padding-block: 1em;
+    padding-inline: 1em 10px;
+    background-color: #17A589;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5em;
+    column-gap: 1em;
+}
+
+#pop-up-rubros .pop-up-title {
+    grid-column: span 2;
+    text-align: center;
+}
+
+#pop-up-rubros .div-line input{
+    width: 120px;
+}
+
+#pop-up-rubros input[type="checkbox"] {
+    width: 20px;
+}
+
+#pop-up-rubros .div-line button{
+    width: 60px;
+    font-size: 0.8em;
+    border: 0;
+}
+
+#pop-up-rubros .div-line {
+    display: flex;
+    gap: 0.5em;
+    width: auto;
+    background: #76D7C4;
+    border-radius: 8px;
+    padding: 0.5em;
+}
+
+#pop-up-rubros .div-line.subTitle {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 116px 28px 60px 19px 116px 15px;
+    font-size: 0.8rem;
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 3px;
+    color: black;
+}
+
 /* ######################## */
 
 #walletOwner{
@@ -660,16 +716,26 @@ body .hidden {
     background-color: rgba(255, 50, 50, 0.836);
 }
 
+.btn-bg-green{
+    background: #4ed04e;
+    outline: white solid 1px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-bg-green:hover{
+    background-color: green!important;
+}
+
 input.bg-red:hover,
 button.bg-red:hover{
     background-color: rgba(255, 0, 0, 0.836)!important;
     color: white;
 }
 
-
-
-
-
+#pop-up-rubros .div-line.bg-gray {
+    background: #b9b9d3!important;
+}
 
 .closeBtn {
     position: absolute;
@@ -749,6 +815,41 @@ button.bg-red:hover{
         font-size: 12px;
     }
 
+    .hideOnCel {
+        display: none!important;
+    }
+
+    #pop-up-rubros .inside-pop-up {
+        position: absolute;
+        top: 2em;
+        margin-bottom: 2em;
+        padding-block: 1em;
+        padding-inline: 1em 10px;
+        background-color: #17A589;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5em;
+    }
+
+    #pop-up-rubros .pop-up-title {
+        grid-column: auto;
+    }
+
+    #pop-up-rubros .div-line.subTitle {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 116px 28px 60px;
+        font-size: 0.8rem;
+        grid-column: auto;
+        text-align: center;
+        margin-top: 0.5em;
+        color: black;
+    }
+
+    #pop-up-rubros .div-line.bg-gray {
+        background: #b9b9d3!important;
+    }
+
     #container {
         display: flex;
         flex-direction: column;
@@ -796,8 +897,6 @@ button.bg-red:hover{
         flex-direction: column!important;
         align-items: stretch!important;
     }
-
-
 
     .total-disponible {
         position: static;

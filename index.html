@@ -88,7 +88,6 @@
                         <div class="monto">25000</div>
                     </div>
                 </div>
-    
             </div>
         </div>
     </main><!-- End #main -->
@@ -133,7 +132,7 @@
             <button id="changePswOption" class="btn-border-none">Cambiar contraseña</button>
             <button id="monthlyChartOption" class="btn-border-none">Ver gráfica mensual</button>
             <button class="btn-border-none">Ver histórico</button>
-            <button class="btn-border-none">Crear nuevo rubro</button>
+            <button id="editRubros" class="btn-border-none">Crear nuevo rubro</button>
         </div>
     </div>
 
@@ -198,6 +197,23 @@
 
     <div id="pieChart" class="hidden">
         <canvas id="monthlyChart" style="width:100%;max-width:900px"></canvas>
+    </div>
+
+    <div id="pop-up-rubros" class="hidden">
+        <div class="inside-pop-up">
+            <button class="closeBtn">X</button>
+            <p class="pop-up-title">Rubros</p>
+            <div data-key="" class="div-line subTitle">
+                <label>Nombre</label><label>Oculto</label><label></label>
+                <label class="hideOnCel">|</label>
+                <label class="hideOnCel">Nombre</label><label class="hideOnCel">Oculto</label>
+            </div>
+            <div class="div-line addToTable">
+                <input placeholder="Nombre" id="rubroName">
+                <input type="checkbox" id="rubroCheckbox">
+                <button class="btn-bg-green">Agregar</button>
+            </div>
+        </div>
     </div>
 
     <!-- <script type="module" src="script.js"></script> -->
