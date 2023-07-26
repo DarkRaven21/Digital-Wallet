@@ -638,6 +638,8 @@ body .hidden {
 }
 
 #pop-up-rubros .inside-pop-up{
+    top: 2em;
+    margin-bottom: 1em;
     position: absolute;
     padding-block: 1em;
     padding-inline: 1em 10px;
